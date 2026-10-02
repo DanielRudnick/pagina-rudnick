@@ -1,0 +1,15 @@
+import { readFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const page = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+assert.match(page, /mobile-layout-guard/);
+assert.match(page, /padding:\s*0 20px/);
+assert.match(page, /<form class="lead-form" id="lead-form"/);
+for (const name of ['name','phone','email','revenue','improvement']) assert.match(page, new RegExp('name="'+name+'"'));
+for (const option of ['R\\$ 20 mil a R\\$ 50 mil','R\\$ 50 mil a R\\$ 100 mil','Acima de R\\$ 100 mil']) assert.match(page, new RegExp(option));
+assert.match(page, /const FORM_ENDPOINT = '';/);
+const script = readFileSync(new URL('../google-apps-script/Code.gs', import.meta.url), 'utf8');
+assert.match(script, /function doPost\(e\)/);
+assert.match(script, /19RpCmU21aSnxft9MwDX7XgNOJNRcMtROSJTSuq4wrmg/);
+assert.match(script, /getSheetByName\('Página1'\)/);
+assert.match(script, /appendRow\(\[new Date\(\), data.name, data.phone, data.email, data.revenue, data.improvement\]\)/);
+console.log('PASS: mobile containment, lead form and Apps Script rules are present');
