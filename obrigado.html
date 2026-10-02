@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Obrigado — Rudnick Digital</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0} html,body{min-height:100%}
+    body{min-height:100vh;display:grid;place-items:center;overflow-x:hidden;background:#030303;color:#fff;font-family:Inter,Arial,sans-serif}
+    .grid{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:48px 48px}
+    .glow{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none}.cyan{width:440px;height:440px;top:-180px;right:-120px;background:rgba(0,229,255,.16)}.pink{width:380px;height:380px;bottom:-160px;left:-100px;background:rgba(255,0,140,.12)}
+    main{position:relative;width:min(680px,calc(100% - 40px));padding:56px 34px;text-align:center;border:1px solid rgba(0,229,255,.16);border-radius:8px;background:rgba(6,6,6,.82);box-shadow:0 22px 70px rgba(0,0,0,.45)}
+    .mark{display:grid;place-items:center;width:62px;height:62px;margin:0 auto 24px;border:1px solid rgba(0,229,255,.45);border-radius:50%;color:#00E5FF;font-size:28px;box-shadow:0 0 30px rgba(0,229,255,.18)}
+    .eyebrow{font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:#FF008C;margin-bottom:16px}h1{font-size:clamp(32px,7vw,54px);line-height:1.05;letter-spacing:-.04em;margin-bottom:18px}h1 span{color:#00E5FF;text-shadow:0 0 26px rgba(0,229,255,.55)}
+    p{max-width:490px;margin:0 auto 30px;color:#a3a3a3;font-size:16px;line-height:1.75}.button{display:inline-block;padding:16px 26px;border-radius:3px;background:#00E5FF;color:#000;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 0 28px rgba(0,229,255,.28);transition:transform .2s,box-shadow .2s}.button:hover{transform:translateY(-2px);box-shadow:0 0 42px rgba(0,229,255,.48)}.back{display:block;margin-top:22px;color:#727272;font-size:12px;text-decoration:none}.back:hover{color:#fff}
+  </style>
+</head>
+<body>
+  <div class="grid"></div><div class="glow cyan"></div><div class="glow pink"></div>
+  <main>
+    <div class="mark">✓</div><div class="eyebrow">Diagnóstico solicitado</div>
+    <h1>Obrigado por <span>dar o próximo passo.</span></h1>
+    <p>Recebemos suas informações. Se quiser acelerar a conversa, pode chamar nossa equipe agora mesmo no WhatsApp.</p>
+    <a class="button" href="https://wa.me/5541998251197" target="_blank" rel="noopener">Chamar no WhatsApp →</a>
+    <a class="back" href="index.html">Voltar para o site</a>
+  </main>
+</body>
+</html>
