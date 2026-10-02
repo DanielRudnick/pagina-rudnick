@@ -245,6 +245,34 @@ body{background:#030303;font-family:'Inter',sans-serif;color:#fff;overflow-x:hid
   .footer-bottom{padding:16px 24px;}
 }
 
+/* ─── MOBILE LAYOUT GUARD ─────────────────────────────── */
+@media(max-width:600px){
+  html,body{max-width:100%;overflow-x:clip;}
+  .mobile-layout-guard{overflow-x:clip;}
+  .wrap{padding:0 20px;}
+  .hero{padding-left:20px;padding-right:20px;gap:32px;}
+  .nav{padding-left:20px;padding-right:20px;}
+  .circuit-sep{overflow:hidden;}
+  .circuit-corner{max-width:100%;}
+  .orb{filter:blur(64px);}
+}
+
+/* ─── LEAD FORM ───────────────────────────────────────── */
+.lead-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;margin:0 auto;max-width:640px;}
+.lead-field{display:flex;flex-direction:column;gap:7px;}
+.lead-field--full{grid-column:1 / -1;}
+.lead-field label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a;}
+.lead-field input,.lead-field select,.lead-field textarea{width:100%;background:rgba(3,3,3,.82);border:1px solid rgba(255,255,255,.14);border-radius:3px;color:#fff;font:inherit;font-size:14px;line-height:1.4;padding:13px 14px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.lead-field select{appearance:auto;}
+.lead-field textarea{min-height:112px;resize:vertical;}
+.lead-field input:focus,.lead-field select:focus,.lead-field textarea:focus{border-color:#00E5FF;box-shadow:0 0 0 3px rgba(0,229,255,.12);}
+.lead-submit{grid-column:1 / -1;border:0;cursor:pointer;margin:10px auto 0;font-family:inherit;}
+.lead-submit:disabled{cursor:wait;opacity:.65;transform:none;}
+.lead-status{grid-column:1 / -1;min-height:22px;text-align:center;font-size:12px;line-height:1.5;color:#aaa;}
+.lead-status[data-state="success"]{color:#00E5FF;}
+.lead-status[data-state="error"]{color:#FF7AB9;}
+@media(max-width:600px){.lead-form{grid-template-columns:1fr;gap:12px;}.lead-field--full,.lead-submit,.lead-status{grid-column:auto;}.lead-submit{width:100%;}.lead-field input,.lead-field select,.lead-field textarea{font-size:16px;}}
+
 /* ─── GLITCH HOVER ────────────────────────────────────── */
 .cyan, .pink {
   position:relative;
@@ -1127,8 +1155,16 @@ style="display:none;visibility:hidden">
   <div class="cta-inner">
     <div class="cta-badge"><span class="pulse"></span>O tempo tá passando e você perdendo venda</div>
     <h2 class="cta-title">Seu conteúdo pode continuar<br>gritando no vazio.<br>Ou você pode começar a<br><span class="cyan">multiplicar com estratégia.</span></h2>
-    <p class="cta-sub">Converse com quem transforma presença digital em faturamento.<br>Diagnóstico inicial sem custo.</p>
-    <a href="https://wa.me/5541998251197" class="cta-btn" target="_blank">Quero multiplicar agora →</a>
+    <p class="cta-sub">Conta rapidinho sobre a sua operação. A gente usa isso para preparar uma conversa mais objetiva.</p>
+    <form class="lead-form" id="lead-form" novalidate>
+      <div class="lead-field"><label for="lead-name">Seu nome</label><input id="lead-name" name="name" type="text" autocomplete="name" required></div>
+      <div class="lead-field"><label for="lead-phone">Telefone / WhatsApp</label><input id="lead-phone" name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="lead-field"><label for="lead-email">E-mail</label><input id="lead-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="lead-field"><label for="lead-revenue">Faturamento médio mensal</label><select id="lead-revenue" name="revenue" required><option value="" selected disabled>Selecione uma faixa</option><option>R$ 20 mil a R$ 50 mil</option><option>R$ 50 mil a R$ 100 mil</option><option>Acima de R$ 100 mil</option></select></div>
+      <div class="lead-field lead-field--full"><label for="lead-improvement">O que você acredita que poderia melhorar no negócio?</label><textarea id="lead-improvement" name="improvement" placeholder="Ex.: gerar mais oportunidades, melhorar a conversão, organizar o atendimento..."></textarea></div>
+      <button class="cta-btn lead-submit" type="submit">Quero um diagnóstico →</button>
+      <p class="lead-status" id="lead-status" aria-live="polite"></p>
+    </form>
     <div class="cta-note">Respondemos em até 2 horas em dias úteis.</div>
   </div>
 </section>
@@ -1214,5 +1250,38 @@ counters.forEach(c => observer.observe(c));
   });
 </script>
 
+<script>
+  // Cole aqui a URL /exec publicada pelo Google Apps Script.
+  const FORM_ENDPOINT = '';
+  const leadForm = document.querySelector('#lead-form');
+  const leadStatus = document.querySelector('#lead-status');
+
+  function setLeadStatus(message, state = '') {
+    leadStatus.textContent = message;
+    leadStatus.dataset.state = state;
+  }
+
+  leadForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!leadForm.reportValidity()) return;
+    if (!FORM_ENDPOINT) {
+      setLeadStatus('O formulário está em configuração. Fale com a equipe pelo WhatsApp.', 'error');
+      return;
+    }
+    const submitButton = leadForm.querySelector('[type="submit"]');
+    const values = Object.fromEntries(new FormData(leadForm));
+    submitButton.disabled = true;
+    setLeadStatus('Enviando suas informações…');
+    try {
+      const response = await fetch(FORM_ENDPOINT, {method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(values)});
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Não foi possível enviar agora.');
+      leadForm.reset();
+      setLeadStatus('Recebemos seus dados. Em breve a equipe entra em contato.', 'success');
+    } catch (error) {
+      setLeadStatus(error.message || 'Não foi possível enviar agora. Tente novamente.', 'error');
+    } finally { submitButton.disabled = false; }
+  });
+</script>
 </body>
 </html>
