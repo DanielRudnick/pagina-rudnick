@@ -1276,8 +1276,7 @@ counters.forEach(c => observer.observe(c));
       const response = await fetch(FORM_ENDPOINT, {method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(values)});
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Não foi possível enviar agora.');
-      leadForm.reset();
-      setLeadStatus('Recebemos seus dados. Em breve a equipe entra em contato.', 'success');
+      window.location.assign('obrigado.html');
     } catch (error) {
       setLeadStatus(error.message || 'Não foi possível enviar agora. Tente novamente.', 'error');
     } finally { submitButton.disabled = false; }
